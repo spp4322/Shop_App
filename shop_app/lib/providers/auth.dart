@@ -23,10 +23,16 @@ class Auth with ChangeNotifier {
     return null;
   }
 
+  String get userId {
+    return _userId;
+  }
+
   Future<void> _authenticate(
       String email, String password, String urlSegment) async {
+    // print('Url se phele');
     final url = Uri.parse(
         'https://identitytoolkit.googleapis.com/v1/accounts:$urlSegment?key=AIzaSyCe3hxwP-YRH7vX9HuwVvX6-78ZOUQc3q0');
+    // print("Url ke baad");
     try {
       final response = await http.post(
         url,
@@ -38,6 +44,7 @@ class Auth with ChangeNotifier {
           },
         ),
       );
+      print(response.body);
       final responseData = json.decode(response.body);
       if (responseData['error'] != null) {
         throw HttpException(responseData['error']['message']);
@@ -52,6 +59,7 @@ class Auth with ChangeNotifier {
       notifyListeners();
     } catch (error) {
       throw error;
+      // print(error);
     }
   }
 
